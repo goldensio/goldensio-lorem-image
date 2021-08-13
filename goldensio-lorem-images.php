@@ -6,7 +6,7 @@
 /**
  * Plugin Name: Goldensio Lorem & Images
  * Plugin URI: https://www.goldensio.com/plugin-goldensio-lorem-images
- * Description: Shows Lorem Ipsum text or random images to fill temporary content.
+ * Description: Shows Lorem Ipsum text or random images to fill temporary content. See settings page for options.
  * Version: 1.0.0
  * Author: goldensio
  * Author URI: http://www.goldensio.com
@@ -29,8 +29,15 @@ defined('ABSPATH') or die('no access');
 // define variable for path to this plugin file.
 define( 'goldensio_goldensio-lorem-images_LOCATION', dirname( __FILE__ ) );
 define( 'goldensio_goldensio-lorem-images_HD_ESPW_LOCATION_URL', plugins_url( '', __FILE__ ) );
- 
- 
+
+add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'goldensio_lorem_images_settings_link');
+function goldensio_lorem_images_settings_link( $links ) {
+	$links[] = '<a href="' .
+		admin_url( 'options-general.php?page=goldensio_goldensio-lorem-images' ) .
+		'">' . __('Settings') . '</a>';
+	return $links;
+}
+  
 function goldensio_lorem_images ( $atts) {
 
     //shortcode: gld-lorem -> [gld-lorem type="image"]
@@ -95,10 +102,11 @@ function goldensio_lorem_images_options_page() {
         <p>There are a lot of <strong>options</strong> you can set:
         <ul>
             <li><strong>type</strong> -> can be 'text' or 'image', default if empty: text - i.e. [gld-lorem type=\"image\"]</li>
-            <li><strong>repetition</strong> -> the number of times you want the text (not image) to be repeated, default is 1</li>
+            <li><strong>repetition</strong> -> the number of times you want the text (not image) to be repeated, default is 1 - i.e. [gld-lorem repetition=\"3\"]</li>
             <li><strong>lorem</strong> -> custom text, default is all the Lorem Ipsum paragraph - i.e. [gld-lorem type=\"your custom text\"]</li>
-            <li><strong>w</strong> -> width (of the image), default is 200</li>
+            <li><strong>w</strong> -> width (of the image), default is 200 - i.e. [gld-lorem w=\"500\"]</li>
         </ul>
+        <br>of course you can combine different options i.e. [gld-lorem type=\"image\" w=\"500\"]
         </p>
         ";
     echo "<hr><p><div style='float:left;margin-right:10px;'>";
